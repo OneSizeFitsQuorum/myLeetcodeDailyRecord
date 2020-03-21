@@ -94,6 +94,8 @@ public:
 
 ## 思路
 
+可以参考此[博客](https://leetcode-cn.com/explore/featured/card/recursion-i/259/complexity-analysis/1228/)
+
 ### 解法1
 这题最简单的就是暴力算法，将x连乘n次，如果 n < 0，我们可以用1 / x，-n来替换x，n。另外我们需关注边界条件，尤其是正整数和负整数的不同范围限制。这种做法的时间复杂度是`O(n)`，肯定不是一个好做法。
 
