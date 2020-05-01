@@ -53,39 +53,38 @@
 ```
 
 ## 代码
-```C++
+```JAVA
 class Solution {
-public:
-    int myAtoi(string str) {
+    public int myAtoi(String str) {
         int len = str.length();
         if(len < 1){
             return 0;
         }
         int flag = 0;
-        long long int num = 0;
+        long num = 0;
         for(int i = 0;i < len;i++){
             if(flag == 0){
-                if(str[i] == ' ') continue;
-                else if(str[i] == '+') flag = 1;
-                else if(str[i] == '-') flag = -1;
-                else if(str[i] >= '0' && str[i] <= '9'){
-                    num = str[i] - '0';
+                if(str.charAt(i) == ' ') continue;
+                else if(str.charAt(i) == '+') flag = 1;
+                else if(str.charAt(i) == '-') flag = -1;
+                else if(str.charAt(i) >= '0' && str.charAt(i) <= '9'){
+                    num = str.charAt(i) - '0';
                     flag = 1;
-                }else return 0;
-            }else{
-                if(str[i] >= '0' && str[i] <= '9'){
-                    num = num*10 + (str[i] - '0');
-                    if(flag*num > INT_MAX) return INT_MAX;
-                    if(flag*num < INT_MIN) return INT_MIN;
+                } else return 0;
+            } else{
+                if(str.charAt(i) >= '0' && str.charAt(i) <= '9'){
+                    num = num*10 + (str.charAt(i) - '0');
+                    if(flag*num > Integer.MAX_VALUE) return Integer.MAX_VALUE;
+                    if(flag*num < Integer.MIN_VALUE) return Integer.MIN_VALUE;
                     
-                }else if (num != 0) break;
+                } else if (num != 0) break;
                 else return 0;
             }
         }
-        return flag*num;
+        return flag*(int)num;
     }
-};
+}
 ```
 ## 思路
 
-没啥好说的，比较枯燥但容易写错，建议理解一些稍微背下结构
+没啥好说的，比较枯燥但容易写错，建议理解一些稍微记下结构
