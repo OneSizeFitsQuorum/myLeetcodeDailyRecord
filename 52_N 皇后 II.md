@@ -1,22 +1,20 @@
 ## 题目
 n 皇后问题 研究的是如何将 n 个皇后放置在 n×n 的棋盘上，并且使皇后彼此之间不能相互攻击。
 
-给你一个整数 n ，返回所有不同的 n 皇后问题 的解决方案。
-
-每一种解法包含一个不同的 n 皇后问题 的棋子放置方案，该方案中 'Q' 和 '.' 分别代表了皇后和空位。
+给你一个整数 n ，返回 n 皇后问题 不同的解决方案的数量。
 
 **示例1**
 ![](static/51.jpg)
 ```
 输入：n = 4
-输出：[[".Q..","...Q","Q...","..Q."],["..Q.","Q...","...Q",".Q.."]]
+输出：2
 解释：如上图所示，4 皇后问题存在两个不同的解法。
 ```
 
 **示例2**
 ```
 输入：n = 1
-输出：[["Q"]]
+输出：1
 ```
 
 **提示**
@@ -26,20 +24,21 @@ n 皇后问题 研究的是如何将 n 个皇后放置在 n×n 的棋盘上，
 ## 代码
 ```JAVA
 class Solution {
-    public List<List<String>> res = new ArrayList<>();
+    
+    public int num = 0;
 
-    public List<List<String>> solveNQueens(int n) {
+    public int totalNQueens(int n) {
         char[][] chess = new char[n][n];
         for (int i = 0; i < n; i++)
             for (int j = 0; j < n; j++)
                 chess[i][j] = '.';
         solve(chess, 0);
-        return res;
+        return num;
     }
 
     private void solve(char[][] chess, int row) {
         if (row == chess.length) {
-            res.add(construct(chess));
+            num++;
             return;
         }
         for (int col = 0; col < chess.length; col++) {
@@ -75,17 +74,8 @@ class Solution {
         }
         return true;
     }
-
-    //把数组转为list
-    private List<String> construct(char[][] chess) {
-        List<String> path = new ArrayList<>();
-        for (int i = 0; i < chess.length; i++) {
-            path.add(new String(chess[i]));
-        }
-        return path;
-    }
 }
 ```
 ## 思路
 
-经典回溯，可以参照此[博客](https://leetcode-cn.com/problems/n-queens/solution/nhuang-hou-jing-dian-hui-su-suan-fa-tu-wen-xiang-j/)。
+经典回溯，比 51 题简单点，只用返回数量即可。应该是通过率最高的 hard 题目了，可以参照 51 题。
