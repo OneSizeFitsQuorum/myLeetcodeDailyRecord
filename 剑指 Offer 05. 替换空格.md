@@ -14,23 +14,22 @@
 ```JAVA
 class Solution {
     public String replaceSpace(String s) {
-        char[] c = s.toCharArray();
-        char[] padding = new char[]{'%','2','0'};
-        int times = 0;
-        for(int i = 0;i < c.length;i++){
-            if (c[i] == ' '){
-                times++;
+        int numOfBlanks = 0;
+        for(int i = 0;i < s.length();i++){
+            if (s.charAt(i) == ' '){
+                numOfBlanks++;
             }
         }
-        StringBuilder result = new StringBuilder(c.length + times * 2);
-        for(int i = 0;i < c.length;i++){
-            if (c[i] != ' '){
-                result.append(c[i]);
+        StringBuilder res = new StringBuilder(s.length() + numOfBlanks * 2);
+        for(int i = 0;i < s.length();i++){
+            char c = s.charAt(i);
+            if (c == ' '){
+                res.append("%20");
             } else {
-                result.append(padding);
+                res.append(c);
             }
         }
-        return result.toString();
+        return res.toString();
     }
 }
 ```
