@@ -1,0 +1,73 @@
+## 题目
+给定一个 m x n 二维字符网格 board 和一个字符串单词 word 。如果 word 存在于网格中，返回 true ；否则，返回 false 。
+
+单词必须按照字母顺序，通过相邻的单元格内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。同一个单元格内的字母不允许被重复使用。
+
+![](static/offer12.jpg)
+
+**示例 1**
+```
+输入：board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "ABCCED"
+输出：true
+```
+
+**示例 2**
+```
+输入：board = [["a","b"],["c","d"]], word = "abcd"
+输出：false
+```
+
+**提示**
+* 1 <= board.length <= 200
+* 1 <= board[i].length <= 200
+* board 和 word 仅由大小写英文字母组成
+
+## 代码
+```JAVA
+class Solution {
+    private int m;
+    private int n;
+    private char[][] board;
+    private char[] wordArray;
+
+    public boolean exist(char[][] board, String word) {
+        this.board = board;
+        this.m = board.length;
+        this.n = board[0].length;
+        this.wordArray = word.toCharArray();
+        for(int i = 0;i < m;i++){
+            for(int j = 0;j < n;j++){
+                if(board[i][j] == wordArray[0]){
+                    if (exist(i, j, 0)){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean exist(int row, int col, int pathIndex){
+        if (pathIndex == wordArray.length){
+            return true;
+        }
+        boolean hasPath = false;
+        if (row >= 0 && row < m && col >= 0 && col < n && board[row][col] == wordArray[pathIndex] && board[row][col] != ' '){
+            pathIndex++;
+            char c = board[row][col]; 
+            board[row][col] = ' ';
+            hasPath = exist(row - 1, col, pathIndex) || exist(row + 1, col, pathIndex) || exist(row, col - 1, pathIndex) || exist(row, col + 1, pathIndex);
+            board[row][col] = c;
+        }
+        return hasPath;
+    }
+}
+```
+
+## 思路
+
+DFS + 剪枝即可。注意并不需要额外搞个矩阵来记录是否已经 visit，而是可以直接在 board 数组上做。
+
+> 记 M,N 分别为矩阵行列大小， K 为字符串 word 长度。
+* 时间复杂度：O(M * N * (3 ^ K))
+* 空间复杂度：O(K)。递归栈的最大深度为字符串长度，最坏情况下 K= M * N。
