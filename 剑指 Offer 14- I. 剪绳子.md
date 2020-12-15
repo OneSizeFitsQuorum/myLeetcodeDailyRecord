@@ -48,9 +48,7 @@ class Solution {
 ```JAVA
 class Solution {
     public int cuttingRope(int n) {
-        if (n <= 1){
-            return 0;
-        } else if (n <= 3){
+        if (n <= 3){
             return n - 1;
         }
         switch (n % 3) {
@@ -77,5 +75,5 @@ class Solution {
 ### 解法 2
 
 贪心算法。原理推算可以参考此[博客](https://leetcode-cn.com/problems/jian-sheng-zi-lcof/solution/mian-shi-ti-14-i-jian-sheng-zi-tan-xin-si-xiang-by/)。
-* 时间复杂度 ：O(1)
+* 时间复杂度 ：O(lgN)
 * 空间复杂度 ：O(1)
