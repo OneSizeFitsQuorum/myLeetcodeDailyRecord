@@ -15,76 +15,84 @@
 
 假设我们的环境只能存储 32 位大小的有符号整数，那么其数值范围为 [−231,  231 − 1]。如果数值超过这个范围，请返回  INT_MAX (231 − 1) 或 INT_MIN (−231) 
 
-**示例1**
+**示例 1**
 ```
-输入: "42"
-输出: 42
+输入："42"
+输出：42
 ```
 
-**示例2**
+**示例 2**
 ```
-输入: "   -42"
-输出: -42
-解释: 第一个非空白字符为 '-', 它是一个负号。
+输入："   -42"
+输出：-42
+解释：第一个非空白字符为 '-', 它是一个负号。
      我们尽可能将负号与后面所有连续出现的数字组合起来，最后得到 -42 。
 ```
 
-**示例3**
+**示例 3**
 ```
-输入: "4193 with words"
-输出: 4193
-解释: 转换截止于数字 '3' ，因为它的下一个字符不为数字。
+输入："4193 with words"
+输出：4193
+解释：转换截止于数字 '3' ，因为它的下一个字符不为数字。
 ```
 
-**示例4**
+**示例 4**
 ```
-输入: "words and 987"
-输出: 0
-解释: 第一个非空字符是 'w', 但它不是数字或正、负号。
+输入："words and 987"
+输出：0
+解释：第一个非空字符是 'w', 但它不是数字或正、负号。
      因此无法执行有效的转换。
 ```
 
-**示例5**
+**示例 5**
 ```
-输入: "-91283472332"
-输出: -2147483648
-解释: 数字 "-91283472332" 超过 32 位有符号整数范围。 
+输入："-91283472332"
+输出：-2147483648
+解释：数字 "-91283472332" 超过 32 位有符号整数范围。 
      因此返回 INT_MIN (−231) 。
 ```
 
 ## 代码
 ```JAVA
 class Solution {
-    public int myAtoi(String str) {
-        int len = str.length();
-        if(len < 1){
-            return 0;
-        }
+    public int myAtoi(String s) {
         int flag = 0;
-        long num = 0;
-        for(int i = 0;i < len;i++){
+        int result = 0;
+        for(char c : s.toCharArray()){
             if(flag == 0){
-                if(str.charAt(i) == ' ') continue;
-                else if(str.charAt(i) == '+') flag = 1;
-                else if(str.charAt(i) == '-') flag = -1;
-                else if(str.charAt(i) >= '0' && str.charAt(i) <= '9'){
-                    num = str.charAt(i) - '0';
+                if(c == ' ') {
+                    continue;
+                } else if (c == '+') {
                     flag = 1;
-                } else return 0;
-            } else{
-                if(str.charAt(i) >= '0' && str.charAt(i) <= '9'){
-                    num = num*10 + (str.charAt(i) - '0');
-                    if(flag*num > Integer.MAX_VALUE) return Integer.MAX_VALUE;
-                    if(flag*num < Integer.MIN_VALUE) return Integer.MIN_VALUE;
-                    
-                } else if (num != 0) break;
-                else return 0;
+                    continue;
+                } else if (c == '-') {
+                    flag = -1;
+                    continue;
+                } else if (c >= '0' && c <= '9') {
+                    flag = 1;
+                    result = c - '0';
+                } else {
+                    return 0;
+                }
+            } else {
+                if(c >= '0' && c <= '9'){
+                    int num = c - '0';
+                    if(result > Integer.MAX_VALUE / 10 || (result == Integer.MAX_VALUE / 10 && num > Integer.MAX_VALUE % 10)) {
+                        return Integer.MAX_VALUE;
+                    }
+                    if(result < Integer.MIN_VALUE / 10 || (result == Integer.MIN_VALUE / 10 && -num < Integer.MIN_VALUE % 10)) {
+                        return Integer.MIN_VALUE;
+                    }
+                    result = result * 10 + flag * num;
+                } else {
+                    break;
+                }
             }
         }
-        return flag*(int)num;
+        return result;
     }
 }
 ```
 ## 思路
 
-没啥好说的，比较枯燥但容易写错，建议理解一些稍微记下结构
+没啥好说的，比较枯燥但容易写错，建议理解一些稍微记下结构。注意没必要用 long 去标识 result，否则就没太大意义了，用 int 去防止溢出才是需要这道题的精髓。
