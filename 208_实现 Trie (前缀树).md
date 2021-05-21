@@ -1,5 +1,5 @@
 ## 题目
-实现一个 Trie (前缀树)，包含 insert, search, 和 startsWith 这三个操作。
+实现一个 Trie （前缀树），包含 insert, search, 和 startsWith 这三个操作。
 
 **示例**
 ```
@@ -18,56 +18,69 @@ trie.search("app");     // 返回 true
 * 保证所有输入均为非空字符串。
 
 ## 代码
-```C++
-class Trie
-{
-private:
-	bool is_string = false;
-    unordered_map<char,Trie*> children;
-public:
-	Trie() {}
+```Java
+class Trie {
 
-	void insert(const string& word)//插入单词
-	{
-		Trie* root = this;
-		for (const auto& w : word) {
-            if(root->children.count(w) == 0) root->children[w] = new Trie();
-			root = root->children[w];
-		}
-		root->is_string = true;
-	}
+    private Node root;
 
-	bool search(const string& word)//查找单词
-	{
-		Trie* root = this;
-		for (const auto& w : word) {
-			if (root->children.count(w) == 0) return false;
-			root = root->children[w];
-		}
-		return root->is_string;
-	}
+    public Trie() {
+        root = new Node();
+    }
+    
+    public void insert(String word) {
+        Node cur = root;
+        for(char c : word.toCharArray()) {
+            Node child = cur.children.get(c);
+            if(child == null) {
+                child = new Node();
+                cur.children.put(c, child);
+            }
+            cur = child;
+        }
+        cur.hasString = true;
+    }
+    
+    public boolean search(String word) {
+        Node cur = root;
+        for(char c : word.toCharArray()) {
+            Node child = cur.children.get(c);
+            if(child == null) {
+                return false;
+            }
+            cur = child;
+        }
+        return cur.hasString;
+    }
+    
+    public boolean startsWith(String prefix) {
+        Node cur = root;
+        for(char c : prefix.toCharArray()) {
+            Node child = cur.children.get(c);
+            if(child == null) {
+                return false;
+            }
+            cur = child;
+        }
+        return true;
+    }
+}
 
-	bool startsWith(string prefix)//查找前缀
-	{
-		Trie* root = this;
-		for (const auto& p : prefix) {
-			if (root->children.count(p) == 0) return false;
-			root = root->children[p];
-		}
-		return true;
-	}
-};
+class Node {
+    Map<Character, Node> children = new HashMap<>();
+    boolean hasString = false;
+}
 
 /**
  * Your Trie object will be instantiated and called as such:
- * Trie* obj = new Trie();
- * obj->insert(word);
- * bool param_2 = obj->search(word);
- * bool param_3 = obj->startsWith(prefix);
+ * Trie obj = new Trie();
+ * obj.insert(word);
+ * boolean param_2 = obj.search(word);
+ * boolean param_3 = obj.startsWith(prefix);
  */
 ```
+
 ## 思路
 
-每个节点利用map来索引子节点，这样子比较省内存。
+* 时间复杂度：初始化为 O(1)，其余操作为 O(∣S∣)，其中 |S| 是每次插入或查询的字符串的长度。
 
-可以参考此[博客](https://leetcode-cn.com/problems/implement-trie-prefix-tree/solution/shi-xian-trie-qian-zhui-shu-by-leetcode/)
+* 空间复杂度：O(∣T∣⋅Σ)，其中 |T| 为所有插入字符串的长度之和，Σ 为字符集的大小，本题 Σ=26。
